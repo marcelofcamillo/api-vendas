@@ -16,7 +16,7 @@ export default class ProductController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
     const showProduct = new ShowProductService();
-    const product = await showProduct.execute(id);
+    const product = await showProduct.execute({ id });
 
     return response.json(product);
   }

@@ -11,7 +11,7 @@ interface IRequest {
   avatar: string;
 }
 
-class UpdateProductService {
+class UpdateUserService {
   public async execute({
     id,
     name,
@@ -43,4 +43,4 @@ class UpdateProductService {
   }
 }
 
-export default UpdateProductService;
+export default UpdateUserService;
