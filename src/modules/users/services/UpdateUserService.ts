@@ -2,6 +2,7 @@ import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import UserRepository from '../typeorm/repositories/UserRepository';
+import { hash } from 'bcryptjs';
 
 interface IRequest {
   id: string;
@@ -32,9 +33,11 @@ class UpdateUserService {
       throw new AppError('There is already one user with this email');
     }
 
+    const hashedPassword = await hash(password, 8);
+
     user.name = name;
     user.email = email;
-    user.password = password;
+    user.password = hashedPassword;
     user.avatar = avatar;
 
     await usersRepository.save(user);
