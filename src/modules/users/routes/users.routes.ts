@@ -1,6 +1,5 @@
-import { celebrate, Segments } from 'celebrate';
+import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
-import Joi from 'joi';
 import multer from 'multer';
 import uploadConfig from '@config/upload';
 import UsersController from '../controllers/UsersController';
