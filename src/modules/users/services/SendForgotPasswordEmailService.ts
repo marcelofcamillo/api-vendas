@@ -1,9 +1,11 @@
 import EtherealMail from '@config/mail/EtherealMail';
+import SESMail from '@config/mail/SESMail';
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import UserRepository from '../typeorm/repositories/UserRepository';
 import UserTokensRepository from '../typeorm/repositories/UserTokensRepository';
 import path from 'path';
+import mailConfig from '@config/mail/mail';
 
 interface IRequest {
   email: string;
@@ -30,6 +32,25 @@ class SendForgotPasswordEmailService {
       'views',
       'forgot_password.hbs',
     );
+
+    if (mailConfig.driver === 'ses') {
+      await SESMail.sendMail({
+        to: {
+          name: user.name,
+          email: user.email,
+        },
+        subject: '[API Vendas] Recuperação de Senha',
+        templateData: {
+          file: forgotPasswordTemplate,
+          variables: {
+            name: user.name,
+            link: `${process.env.APP_WEB_URL}/reset_password?token=${token}`,
+          },
+        },
+      });
+
+      return;
+    }
 
     await EtherealMail.sendMail({
       to: {
