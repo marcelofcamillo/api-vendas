@@ -4,8 +4,8 @@ import crypto from 'crypto';
 
 interface IUploadConfig {
   driver: 's3' | 'disk';
-  directory: string;
   tmpFolder: string;
+  directory: string;
   multer: {
     storage: StorageEngine;
   };
@@ -20,6 +20,7 @@ const uploadFolder = path.resolve(__dirname, '..', '..', 'uploads');
 const tmpFolder = path.resolve(__dirname, '..', '..', 'temp');
 
 export default {
+  driver: process.env.STORAGE_DRIVER,
   directory: uploadFolder,
   tmpFolder,
   multer: {
