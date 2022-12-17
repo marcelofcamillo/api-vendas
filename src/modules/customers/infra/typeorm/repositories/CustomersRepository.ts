@@ -11,6 +11,16 @@ class CustomersRepository implements ICustomersRepository {
     this.ormRepository = getRepository(Customer);
   }
 
+  public async remove(customer: Customer): Promise<void> {
+    await this.ormRepository.remove(customer);
+  }
+
+  public async findAll(): Promise<Customer[] | undefined> {
+    const customers = await this.ormRepository.find();
+
+    return customers;
+  }
+
   public async create({ name, email }: ICreateCustomer): Promise<ICustomer> {
     const customer = this.ormRepository.create({ name, email });
 

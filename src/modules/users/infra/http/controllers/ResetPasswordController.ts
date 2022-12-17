@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
-import ResetPasswordService from '../../../services/ResetPasswordService';
-
-interface IRequest {
-  token: string;
-  password: string;
-}
+import { container } from 'tsyringe';
+import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 
 export default class ResetPasswordController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { token, password } = request.body;
-    const resetPassword = new ResetPasswordService();
+    const { password, token } = request.body;
 
-    await resetPassword.execute({ token, password });
+    const resetPassword = container.resolve(ResetPasswordService);
+
+    await resetPassword.execute({
+      password,
+      token,
+    });
 
     return response.status(204).json();
   }
