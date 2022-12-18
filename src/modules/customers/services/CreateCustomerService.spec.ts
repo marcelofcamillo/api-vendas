@@ -3,12 +3,17 @@ import AppError from '@shared/errors/AppError';
 import FakeCustomersRepository from '../domain/repositories/fakes/FakeCustomersRepository';
 import CreateCustomerService from './CreateCustomerService';
 
-describe('CreateCustomer', () => {
-  it('Should be able to create a new customer', async () => {
-    const fakeCustomersRepository = new FakeCustomersRepository();
-    const createCustomer = new CreateCustomerService(fakeCustomersRepository);
+let fakeCustomersRepository: FakeCustomersRepository;
+let createCustomerService: CreateCustomerService;
 
-    const customer = await createCustomer.execute({
+describe('CreateCustomer', () => {
+  beforeEach(() => {
+    fakeCustomersRepository = new FakeCustomersRepository();
+    createCustomerService = new CreateCustomerService(fakeCustomersRepository);
+  });
+
+  it('Should be able to create a new customer', async () => {
+    const customer = await createCustomerService.execute({
       name: 'Marcelo Camillo',
       email: 'marcelo@mail.com',
     });
@@ -17,16 +22,13 @@ describe('CreateCustomer', () => {
   });
 
   it('Should not be able to create two customers with the same email', async () => {
-    const fakeCustomersRepository = new FakeCustomersRepository();
-    const createCustomer = new CreateCustomerService(fakeCustomersRepository);
-
-    await createCustomer.execute({
+    await createCustomerService.execute({
       name: 'Marcelo Camillo',
       email: 'marcelo@mail.com',
     });
 
     expect(
-      createCustomer.execute({
+      createCustomerService.execute({
         name: 'Marcelo Camillo',
         email: 'marcelo@mail.com',
       }),
