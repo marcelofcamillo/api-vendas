@@ -36,7 +36,7 @@ git clone https://github.com/marcelofcamillo/api-vendas.git
 
 ```shell
 cd api-vendas
-npm install
+npm ci
 ```
 
 ### 3. Criar o arquivo .env com:
